@@ -3,8 +3,11 @@ using Xunit;
 
 namespace GradeBook.Tests
 {
+    public delegate string WriteLogDelegate(string logMessage);
+
     public class TypeTests
     {
+        int count = 0;
         //   [Fact]
         // public void CSharpCanPassByRef()
         // {
@@ -20,6 +23,48 @@ namespace GradeBook.Tests
         //     // with out keyword we must initialize a variable before leaving the method
         //     book = new Book(name);
         // }
+        [Fact]
+        public void WriteLogDelegateCanPointToMethod()
+        {
+            WriteLogDelegate log = ReturnMessage;
+
+            // LONG SYNTAX FOR DELEGATE INIT
+            // log = new WriteLogDelegate(ReturnMessage);
+
+            // SHORT SYNTAX FOR DELEGATE INIT
+            log += ReturnMessage;
+            log += IncrementCount;
+
+            var result = log("Hello!");
+            Assert.Equal(3, count);
+        }
+
+        string IncrementCount(string message)
+        {
+            count++;
+            return message.ToLower();
+        }
+
+        string ReturnMessage(string message)
+        {
+            count++;
+            return message;
+        }
+
+        [Fact]
+        public void StringsBehaveLikeValueTypes()
+        {
+            string name = "Mario Andres";
+            var upper = MakeUpperCase(name);
+
+            Assert.Equal("Mario Andres", name);
+            Assert.Equal("MARIO ANDRES", upper);
+        }
+
+        private string MakeUpperCase(string parameter)
+        {
+            return parameter.ToUpper();
+        }
 
         [Fact]
         public void ValueTypesAlsoPassByValue()
@@ -49,9 +94,9 @@ namespace GradeBook.Tests
             Assert.Equal(book1.Name, newName);
         }
 
-        void GetBookSetName(ref Book book, string name)
+        void GetBookSetName(ref InMemoryBook book, string name)
         {
-            book = new Book(name);
+            book = new InMemoryBook(name);
         }
 
         [Fact]
@@ -64,9 +109,9 @@ namespace GradeBook.Tests
             Assert.Equal("Book 1", book1.Name);
         }
 
-        void GetBookSetName(Book book, string name)
+        void GetBookSetName(InMemoryBook book, string name)
         {
-            book = new Book(name);
+            book = new InMemoryBook(name);
         }
 
         [Fact]
@@ -88,9 +133,9 @@ namespace GradeBook.Tests
            Assert.True(Object.ReferenceEquals(book1, book2));
         }
 
-        Book GetBook(string name)
+        InMemoryBook GetBook(string name)
         {
-            return new Book(name);
+            return new InMemoryBook(name);
         }
     }
 }
