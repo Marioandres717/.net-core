@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ACM.BL
 {
-    public class Product
+    public class Product: Entitybase
     {
         public Product()
         {
@@ -16,25 +16,10 @@ namespace ACM.BL
 
         public decimal? CurrentPrice { get; set; }
         public string ProductDescription { get; set; }
-        public int Productid { get; private set; }
+        public int ProductId { get; private set; }
         public string ProductName { get; set; }
 
-        public Product Retrieve(int productId)
-        {
-            return new Product();
-        }
-
-        public List<Product> Retrieve()
-        {
-            return new List<Product>();
-        }
-
-        public bool Save()
-        {
-            return true;
-        }
-
-        public bool Validate()
+        public override bool Validate()
         {
             var isValid = true;
 
