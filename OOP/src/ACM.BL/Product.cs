@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace ACM.BL
 {
-    public class Product: Entitybase
+    public class Product: Entitybase, ILoggable
     {
         public Product()
         {
@@ -41,5 +41,8 @@ namespace ACM.BL
 
             return isValid;
         }
+
+        public string Log() =>
+            $"{ProductId}: {ProductName} Detail: {ProductDescription}";
     }
 }
